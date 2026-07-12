@@ -9,6 +9,7 @@ from treino.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
+
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
@@ -18,9 +19,9 @@ def register():
         error = None
 
         if not username:
-            error = 'Username is required.'
+            error = 'O nome de usuário é obrigatório.'
         elif not password:
-            error = 'Password is required.'
+            error = 'A senha é obrigatória.'
 
         if error is None:
             try:
@@ -30,13 +31,14 @@ def register():
                 )
                 db.commit()
             except db.IntegrityError:
-                error = f"User {username} is already registered."
+                error = f'O usuário "{username}" já está cadastrado.'
             else:
                 return redirect(url_for("auth.login"))
 
         flash(error)
 
     return render_template('auth/register.html')
+
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
@@ -45,14 +47,16 @@ def login():
         password = request.form['password']
         db = get_db()
         error = None
+
         user = db.execute(
-            'SELECT * FROM user WHERE username = ?', (username,)
+            'SELECT * FROM user WHERE username = ?',
+            (username,)
         ).fetchone()
 
         if user is None:
-            error = 'Incorrect username.'
+            error = 'Usuário não encontrado.'
         elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password.'
+            error = 'Senha incorreta.'
 
         if error is None:
             session.clear()
@@ -63,6 +67,7 @@ def login():
 
     return render_template('auth/login.html')
 
+
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get('user_id')
@@ -71,13 +76,16 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user = get_db().execute(
-            'SELECT * FROM user WHERE id = ?', (user_id,)
+            'SELECT * FROM user WHERE id = ?',
+            (user_id,)
         ).fetchone()
+
 
 @bp.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
 
 def login_required(view):
     @functools.wraps(view)
