@@ -9,15 +9,21 @@
 {% endblock %}
 
 {% block content %}
-  {% for exercise in exercises %}
-    <article class="post">
-      <header>
+
+{% for exercise in exercises %}
+
+<div class="exercise-card">
+
+    <div class="exercise-header">
+
         <div>
-          <h2>{{ exercise['name'] }}</h2>
-          <div class="about">
-            por {{ exercise['username'] }} em {{ exercise['created'].strftime('%d/%m/%Y') }}
-          </div>
-        </div>
+            <h2>💪 {{ exercise['name'] }}</h2>
+
+            <small>
+                Cadastrado por {{ exercise['username'] }}
+                em {{ exercise['created'].strftime('%d/%m/%Y') }}
+            </small>
+        </
 
         {% if g.user['id'] == exercise['author_id'] %}
           <a class="action"

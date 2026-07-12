@@ -20,6 +20,7 @@ def index():
                e.sets,
                e.reps,
                e.weight,
+               e.notes,
                e.created,
                e.author_id,
                u.username
@@ -41,6 +42,7 @@ def create():
         sets = request.form["sets"]
         reps = request.form["reps"]
         weight = request.form["weight"]
+        notes = request.form["notes"]
 
         error = None
 
@@ -53,9 +55,9 @@ def create():
             db = get_db()
             db.execute(
                 """
-                INSERT INTO exercise
-                (name, muscle_group, sets, reps, weight, author_id)
-                VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO exercise
+            (name, muscle_group, sets, reps, weight, notes, author_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     name,
@@ -63,6 +65,7 @@ def create():
                     sets,
                     reps,
                     weight,
+                    notes,
                     g.user["id"],
                 ),
             )
@@ -81,6 +84,7 @@ def get_exercise(id, check_author=True):
                e.sets,
                e.reps,
                e.weight,
+               e.notes,
                e.created,
                e.author_id,
                u.username
@@ -111,6 +115,7 @@ def update(id):
         sets = request.form["sets"]
         reps = request.form["reps"]
         weight = request.form["weight"]
+        notes = request.form["notes"]
 
         error = None
 
@@ -128,7 +133,8 @@ def update(id):
                     muscle_group = ?,
                     sets = ?,
                     reps = ?,
-                    weight = ?
+                    weight = ?,
+                    notes = ?
                 WHERE id = ?
                 """,
                 (
@@ -137,6 +143,7 @@ def update(id):
                     sets,
                     reps,
                     weight,
+                    notes,
                     id,
                 ),
             )

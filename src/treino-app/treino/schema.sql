@@ -17,6 +17,7 @@ CREATE TABLE exercise (
     sets INTEGER NOT NULL,
     reps INTEGER NOT NULL,
     weight REAL NOT NULL,
+    notes TEXT NOT NULL,
 
     FOREIGN KEY (author_id) REFERENCES user(id)
 );
