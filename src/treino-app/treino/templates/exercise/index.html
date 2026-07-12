@@ -30,7 +30,7 @@
       <p><strong>Grupo muscular:</strong> {{ exercise['muscle_group'] }}</p>
       <p><strong>Séries:</strong> {{ exercise['sets'] }}</p>
       <p><strong>Repetições:</strong> {{ exercise['reps'] }}</p>
-      <p><strong>Carga:</strong> {{ exercise['weight'] }} kg</p>
+      <p><strong>Carga:</strong> {{ "%.1f"|format(exercise['weight']) }} kg</p>
 
     </article>
 
