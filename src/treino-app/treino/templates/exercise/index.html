@@ -1,75 +1,192 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Exercícios{% endblock %}</h1>
+<h1>{% block title %}Exercícios{% endblock %}</h1>
 
-  {% if g.user %}
-    <a class="action" href="{{ url_for('exercise.create') }}">
-      Novo Exercício
-    </a>
-  {% endif %}
+{% if g.user %}
+<a class="action" href="{{ url_for('exercise.create') }}">
+    ➕ Novo Exercício
+</a>
+{% endif %}
 {% endblock %}
 
 {% block content %}
 
-  {% if exercises %}
+<div class="filters">
 
-    {% for exercise in exercises %}
+    <input
+        type="text"
+        id="searchExercise"
+        placeholder="🔍 Pesquisar exercício...">
 
-      <div class="exercise-card">
+    <select id="filterMuscle">
+        <option value="">Todos os grupos</option>
+        <option value="Peito">Peito</option>
+        <option value="Costas">Costas</option>
+        <option value="Ombros">Ombros</option>
+        <option value="Bíceps">Bíceps</option>
+        <option value="Tríceps">Tríceps</option>
+        <option value="Pernas">Pernas</option>
+        <option value="Abdômen">Abdômen</option>
+    </select>
 
-        <div class="exercise-header">
+</div>
 
-          <div>
+{% if exercises %}
+
+<div class="dashboard">
+
+    <div class="dashboard-card">
+        <h3>📋 Exercícios</h3>
+        <p>{{ exercises|length }}</p>
+    </div>
+
+    <div class="dashboard-card">
+        <h3>🏋️ Grupos</h3>
+        <p>{{ exercises | map(attribute='muscle_group') | unique | list | length }}</p>
+    </div>
+
+    <div class="dashboard-card">
+        <h3>⚖️ Maior carga</h3>
+        <p>{{ exercises | map(attribute='weight') | max }} kg</p>
+    </div>
+
+</div>
+
+<div class="exercise-grid">
+
+{% for exercise in exercises %}
+
+<div
+    class="exercise-card"
+    data-name="{{ exercise['name']|lower }}"
+    data-muscle="{{ exercise['muscle_group'] }}">
+
+    <div class="exercise-header">
+
+        <div>
+
             <h2>💪 {{ exercise['name'] }}</h2>
 
             <small>
-              Cadastrado por {{ exercise['username'] }}
-              em {{ exercise['created'].strftime('%d/%m/%Y') }}
+                👤 {{ exercise['username'] }}
+                •
+                📅 {{ exercise['created'].strftime('%d/%m/%Y') }}
             </small>
-          </div>
-
-          {% if g.user and g.user['id'] == exercise['author_id'] %}
-            <a
-              class="action"
-              href="{{ url_for('exercise.update', id=exercise['id']) }}">
-              Editar
-            </a>
-          {% endif %}
 
         </div>
 
-        <div class="exercise-info">
+        {% if g.user and g.user['id'] == exercise['author_id'] %}
+        <a
+            class="action"
+            href="{{ url_for('exercise.update', id=exercise['id']) }}">
+            ✏️ Editar
+        </a>
+        {% endif %}
 
-          <p>🏋️ <strong>Grupo muscular:</strong> {{ exercise['muscle_group'] }}</p>
-
-          <p>🔁 <strong>Séries:</strong> {{ exercise['sets'] }}</p>
-
-          <p>🎯 <strong>Repetições:</strong> {{ exercise['reps'] }}</p>
-
-          <p>⚖️ <strong>Carga:</strong> {{ "%.1f"|format(exercise['weight']) }} kg</p>
-
-          {% if exercise['notes'] %}
-            <p>📝 <strong>Observações:</strong></p>
-            <p>{{ exercise['notes'] }}</p>
-          {% endif %}
-
-        </div>
-
-      </div>
-
-    {% endfor %}
-
-  {% else %}
-
-    <div class="exercise-card">
-      <h2>🏋️ Nenhum exercício cadastrado</h2>
-
-      <p>
-        Clique em <strong>Novo Exercício</strong> para cadastrar seu primeiro treino.
-      </p>
     </div>
 
-  {% endif %}
+    <div class="exercise-info">
+
+        <p>
+
+            🏋️ <strong>Grupo:</strong>
+
+            <span
+                class="badge badge-{{ exercise['muscle_group']|lower|replace('í','i')|replace('ô','o')|replace('ê','e')|replace('á','a')|replace('é','e')|replace('ú','u') }}">
+                {{ exercise['muscle_group'] }}
+            </span>
+
+        </p>
+
+        <p>
+            🔁
+            <strong>Séries:</strong>
+            {{ exercise['sets'] }}
+        </p>
+
+        <p>
+            🎯
+            <strong>Repetições:</strong>
+            {{ exercise['reps'] }}
+        </p>
+
+        <p>
+            ⚖️
+            <strong>Carga:</strong>
+            {{ "%.1f"|format(exercise['weight']) }} kg
+        </p>
+
+        {% if exercise['notes'] %}
+
+        <hr>
+
+        <p>
+
+            📝
+            <strong>Observações</strong>
+
+        </p>
+
+        <p>{{ exercise['notes'] }}</p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="exercise-card">
+
+    <h2>🏋️ Nenhum exercício cadastrado</h2>
+
+    <p>
+        Cadastre seu primeiro exercício clicando em
+        <strong>➕ Novo Exercício</strong>.
+    </p>
+
+</div>
+
+{% endif %}
+
+<script>
+
+const search = document.getElementById("searchExercise");
+const filter = document.getElementById("filterMuscle");
+
+function filterExercises() {
+
+    const text = search.value.toLowerCase();
+    const muscle = filter.value;
+
+    document.querySelectorAll(".exercise-card").forEach(card => {
+
+        if (!card.dataset.name) return;
+
+        const name = card.dataset.name;
+        const group = card.dataset.muscle;
+
+        const matchesName = name.includes(text);
+        const matchesGroup = muscle === "" || group === muscle;
+
+        card.style.display =
+            matchesName && matchesGroup
+                ? ""
+                : "none";
+
+    });
+
+}
+
+search.addEventListener("input", filterExercises);
+filter.addEventListener("change", filterExercises);
+
+</script>
 
 {% endblock %}

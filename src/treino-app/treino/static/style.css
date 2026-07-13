@@ -1,20 +1,37 @@
 html {
     font-family: Arial, Helvetica, sans-serif;
-    background: #f4f6f8;
+    background: #eef2f7;
     padding: 1rem;
 }
 
 body {
     max-width: 960px;
     margin: 0 auto;
-    background: white;
+    background: #ffffff;
+    color: #333;
     border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0,0,0,.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
+    transition: background .3s, color .3s;
 }
 
-h1, h2 {
+/* =========================
+   TÍTULOS
+========================= */
+
+h1,
+h2,
+h3 {
     color: #2c3e50;
+    margin-top: 0;
 }
+
+small {
+    color: #666;
+}
+
+/* =========================
+   LINKS
+========================= */
 
 a {
     color: #1565c0;
@@ -25,83 +42,86 @@ a:hover {
     text-decoration: underline;
 }
 
+/* =========================
+   NAVBAR
+========================= */
+
 nav {
     background: #1976d2;
     color: white;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 1rem 1.5rem;
+    border-radius: 12px 12px 0 0;
 }
 
 nav h1 {
-    margin: 0;
     color: white;
-    flex: auto;
+    margin: 0;
 }
 
-nav a {
+nav ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+}
+
+nav a,
+nav span {
     color: white;
-    margin-left: 1rem;
     font-weight: bold;
 }
+
+/* =========================
+   BOTÃO DO TEMA
+========================= */
+
+#theme-toggle {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: .2s;
+}
+
+#theme-toggle:hover {
+    background: rgba(255, 255, 255, .15);
+    transform: rotate(20deg);
+}
+
+/* =========================
+   CONTEÚDO
+========================= */
 
 .content {
     padding: 2rem;
 }
 
+/* =========================
+   BOTÕES
+========================= */
+
 .action {
     background: #2e7d32;
     color: white;
-    padding: .5rem 1rem;
-    border-radius: 6px;
+    padding: .7rem 1.2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: .2s;
 }
 
 .action:hover {
     background: #1b5e20;
+    transform: scale(1.05);
     text-decoration: none;
-}
-
-.exercise-card {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 3px 8px rgba(0,0,0,.08);
-}
-
-.exercise-card h2 {
-    margin-top: 0;
-}
-
-.exercise-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.exercise-info {
-    margin-top: 15px;
-    line-height: 1.8;
-}
-
-.exercise-info strong {
-    color: #444;
-}
-
-textarea,
-input,
-select {
-    width: 100%;
-    padding: .7rem;
-    margin-bottom: 1rem;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
-textarea {
-    resize: vertical;
 }
 
 input[type=submit] {
@@ -110,12 +130,14 @@ input[type=submit] {
     color: white;
     border: none;
     cursor: pointer;
-    padding: .8rem 1.4rem;
-    border-radius: 6px;
+    padding: .8rem 1.5rem;
+    border-radius: 8px;
+    transition: .2s;
 }
 
 input[type=submit]:hover {
     background: #0d47a1;
+    transform: translateY(-2px);
 }
 
 .danger {
@@ -126,14 +148,267 @@ input[type=submit]:hover {
     background: #8e0000 !important;
 }
 
+/* =========================
+   CARDS
+========================= */
+
+.exercise-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .08);
+    transition: transform .25s, box-shadow .25s;
+}
+
+.exercise-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, .15);
+}
+
+.exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.exercise-info {
+    line-height: 1.8;
+}
+
+.exercise-info strong {
+    color: #444;
+}
+
+/* =========================
+   FORMULÁRIOS
+========================= */
+
+label {
+    font-weight: bold;
+}
+
+textarea,
+input,
+select {
+    width: 100%;
+    padding: .8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: .95rem;
+    transition: border .2s, box-shadow .2s;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, .2);
+}
+
+/* =========================
+   ALERTAS
+========================= */
+
 .flash {
     background: #fff3cd;
-    border: 1px solid #ffeeba;
-    padding: 10px;
-    border-radius: 6px;
+    border-left: 5px solid #ffc107;
+    padding: 12px;
+    border-radius: 8px;
     margin-bottom: 20px;
 }
 
-small {
-    color: #666;
+/* =========================
+   BADGES
+========================= */
+
+.badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    color: white;
+    font-size: .85rem;
+    font-weight: bold;
+}
+
+.badge-peito {
+    background: #d32f2f;
+}
+
+.badge-costas {
+    background: #1976d2;
+}
+
+.badge-pernas {
+    background: #388e3c;
+}
+
+.badge-biceps {
+    background: #f57c00;
+}
+
+.badge-triceps {
+    background: #8e24aa;
+}
+
+.badge-ombros {
+    background: #00897b;
+}
+
+.badge-abdomen {
+    background: #6d4c41;
+}
+
+/* =========================
+   DARK MODE
+========================= */
+
+body.dark {
+    background: #121212;
+    color: #e5e5e5;
+}
+
+body.dark h1,
+body.dark h2,
+body.dark h3 {
+    color: #ffffff;
+}
+
+body.dark small {
+    color: #bdbdbd;
+}
+
+body.dark nav {
+    background: #0d47a1;
+}
+
+body.dark .exercise-card {
+    background: #1f1f1f;
+    color: #f5f5f5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .5);
+}
+
+body.dark .exercise-info strong {
+    color: #ffffff;
+}
+
+body.dark textarea,
+body.dark input,
+body.dark select {
+    background: #2d2d2d;
+    color: white;
+    border: 1px solid #555;
+}
+
+body.dark textarea::placeholder,
+body.dark input::placeholder {
+    color: #bbb;
+}
+
+body.dark .flash {
+    background: #3d3410;
+    color: #fff8dc;
+    border-left-color: #ffd54f;
+}
+
+body.dark a {
+    color: #90caf9;
+}
+
+body.dark .action {
+    background: #43a047;
+}
+
+body.dark .action:hover {
+    background: #2e7d32;
+}
+
+body.dark #theme-toggle {
+    border-color: #ddd;
+    color: #ddd;
+}
+
+body.dark #theme-toggle:hover {
+    background: rgba(255, 255, 255, .1);
+}
+.filters{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-bottom:25px;
+
+}
+
+.filters input{
+
+    flex:3;
+
+}
+
+.filters select{
+
+    flex:1;
+
+}
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.dashboard-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,.08);
+    transition: transform .2s;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-4px);
+}
+
+.dashboard-card h3 {
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.dashboard-card p {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1976d2;
+    margin: 0;
+}
+/* =========================
+   GRID DE EXERCÍCIOS
+========================= */
+
+.exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px;
+}
+body.dark .dashboard-card {
+    background: #1f1f1f;
+    color: white;
+}
+
+body.dark .dashboard-card p {
+    color: #90caf9;
 }
