@@ -8,10 +8,14 @@ from treino.db import get_db
 
 bp = Blueprint("exercise", __name__)
 
-
 @bp.route("/")
 def index():
+    # Visitante: mostra a página inicial
+    if g.user is None:
+        return render_template("home.html")
+
     db = get_db()
+
     exercises = db.execute(
         """
         SELECT e.id,
@@ -26,12 +30,16 @@ def index():
                u.username
         FROM exercise e
         JOIN user u ON e.author_id = u.id
+        WHERE e.author_id = ?
         ORDER BY e.created DESC
-        """
+        """,
+        (g.user["id"],),
     ).fetchall()
 
-    return render_template("exercise/index.html", exercises=exercises)
-
+    return render_template(
+        "exercise/index.html",
+        exercises=exercises
+    )
 
 @bp.route("/exercise/create", methods=("GET", "POST"))
 @login_required

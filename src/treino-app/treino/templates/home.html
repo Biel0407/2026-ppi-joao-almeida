@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>🏋️ Bem-vindo ao TreinoApp</h1>
+{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <h2>Organize seus treinos de maneira simples.</h2>
+
+    <p>
+        Cadastre exercícios, acompanhe cargas,
+        organize por grupo muscular e mantenha seus
+        treinos sempre à mão.
+    </p>
+
+    <div class="hero-buttons">
+
+        <a class="action"
+           href="{{ url_for('auth.login') }}">
+            Entrar
+        </a>
+
+        <a class="action secondary"
+           href="{{ url_for('auth.register') }}">
+            Criar conta
+        </a>
+
+    </div>
+
+</section>
+
+<section class="features">
+
+    <div class="feature-card">
+
+        <h3>💪 Cadastre exercícios</h3>
+
+        <p>
+            Registre séries, repetições, carga e observações.
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <h3>🏋️ Organize seus treinos</h3>
+
+        <p>
+            Separe seus exercícios por grupo muscular.
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <h3>🔍 Pesquise rapidamente</h3>
+
+        <p>
+            Encontre qualquer exercício em segundos.
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <h3>🌙 Tema escuro</h3>
+
+        <p>
+            Utilize o sistema no modo claro ou escuro.
+        </p>
+
+    </div>
+
+</section>
+
+<section class="preview">
+
+    <h2>Como o TreinoApp funciona?</h2>
+
+    <div class="exercise-grid">
+
+        <div class="exercise-card">
+
+            <h2>💪 Supino Reto</h2>
+
+            <p><strong>Grupo:</strong> Peito</p>
+
+            <p><strong>Séries:</strong> 4</p>
+
+            <p><strong>Repetições:</strong> 10</p>
+
+            <p><strong>Carga:</strong> 80 kg</p>
+
+        </div>
+
+        <div class="exercise-card">
+
+            <h2>🏋️ Agachamento</h2>
+
+            <p><strong>Grupo:</strong> Pernas</p>
+
+            <p><strong>Séries:</strong> 4</p>
+
+            <p><strong>Repetições:</strong> 12</p>
+
+            <p><strong>Carga:</strong> 100 kg</p>
+
+        </div>
+
+        <div class="exercise-card">
+
+            <h2>💥 Rosca Direta</h2>
+
+            <p><strong>Grupo:</strong> Bíceps</p>
+
+            <p><strong>Séries:</strong> 3</p>
+
+            <p><strong>Repetições:</strong> 12</p>
+
+            <p><strong>Carga:</strong> 40 kg</p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
