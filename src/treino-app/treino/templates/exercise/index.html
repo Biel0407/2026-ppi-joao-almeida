@@ -4,44 +4,72 @@
   <h1>{% block title %}Exercícios{% endblock %}</h1>
 
   {% if g.user %}
-    <a class="action" href="{{ url_for('exercise.create') }}">Novo Exercício</a>
+    <a class="action" href="{{ url_for('exercise.create') }}">
+      Novo Exercício
+    </a>
   {% endif %}
 {% endblock %}
 
 {% block content %}
 
-{% for exercise in exercises %}
+  {% if exercises %}
 
-<div class="exercise-card">
+    {% for exercise in exercises %}
 
-    <div class="exercise-header">
+      <div class="exercise-card">
 
-        <div>
+        <div class="exercise-header">
+
+          <div>
             <h2>💪 {{ exercise['name'] }}</h2>
 
             <small>
-                Cadastrado por {{ exercise['username'] }}
-                em {{ exercise['created'].strftime('%d/%m/%Y') }}
+              Cadastrado por {{ exercise['username'] }}
+              em {{ exercise['created'].strftime('%d/%m/%Y') }}
             </small>
-        </
+          </div>
 
-        {% if g.user['id'] == exercise['author_id'] %}
-          <a class="action"
-             href="{{ url_for('exercise.update', id=exercise['id']) }}">
-            Editar
-          </a>
-        {% endif %}
-      </header>
+          {% if g.user and g.user['id'] == exercise['author_id'] %}
+            <a
+              class="action"
+              href="{{ url_for('exercise.update', id=exercise['id']) }}">
+              Editar
+            </a>
+          {% endif %}
 
-      <p><strong>Grupo muscular:</strong> {{ exercise['muscle_group'] }}</p>
-      <p><strong>Séries:</strong> {{ exercise['sets'] }}</p>
-      <p><strong>Repetições:</strong> {{ exercise['reps'] }}</p>
-      <p><strong>Carga:</strong> {{ "%.1f"|format(exercise['weight']) }} kg</p>
+        </div>
 
-    </article>
+        <div class="exercise-info">
 
-    {% if not loop.last %}
-      <hr>
-    {% endif %}
-  {% endfor %}
+          <p>🏋️ <strong>Grupo muscular:</strong> {{ exercise['muscle_group'] }}</p>
+
+          <p>🔁 <strong>Séries:</strong> {{ exercise['sets'] }}</p>
+
+          <p>🎯 <strong>Repetições:</strong> {{ exercise['reps'] }}</p>
+
+          <p>⚖️ <strong>Carga:</strong> {{ "%.1f"|format(exercise['weight']) }} kg</p>
+
+          {% if exercise['notes'] %}
+            <p>📝 <strong>Observações:</strong></p>
+            <p>{{ exercise['notes'] }}</p>
+          {% endif %}
+
+        </div>
+
+      </div>
+
+    {% endfor %}
+
+  {% else %}
+
+    <div class="exercise-card">
+      <h2>🏋️ Nenhum exercício cadastrado</h2>
+
+      <p>
+        Clique em <strong>Novo Exercício</strong> para cadastrar seu primeiro treino.
+      </p>
+    </div>
+
+  {% endif %}
+
 {% endblock %}
